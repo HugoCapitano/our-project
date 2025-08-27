@@ -1,11 +1,20 @@
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('TkAgg')  # ou 'Qt5Agg', 'Agg' (pour sauvegarder sans afficher)
 import numpy as np
 from Outils.initialisation import add_x0
 import os
 from matplotlib import cm
 
 
-def plot_decision_regions(X, y, weights, type, title="Perceptron monocouche - table_3_1_decision.png", save=False):
+def plot_decision_regions(
+    X: np.ndarray,
+    y: np.ndarray,
+    weights: np.ndarray,
+    type: str,
+    title: str = "Perceptron monocouche - table_3_1_decision.png",
+    save: bool = False
+) -> None:
     """
     Affiche les régions de décision d'un perceptron monocouche (multi-classes) sur un plan 2D.
 

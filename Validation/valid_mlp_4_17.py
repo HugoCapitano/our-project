@@ -4,12 +4,40 @@ from Outils.visual_mlp import *
 
 
 # === Fonctions utilitaires pour la standardisation (z-score) ===
-def zscore_fit(X):
+def zscore_fit(X: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Calcule la moyenne et l'écart-type de chaque feature pour la standardisation z-score.
+    Paramètres :
+    ------------
+    X : ndarray shape (m, n)
+        Données d'entrée.
+    Retour :
+    --------
+    mu : ndarray shape (1, n)
+        Moyenne de chaque feature.
+    sd : ndarray shape (1, n)
+        Écart-type de chaque feature.
+    """
     mu = X.mean(axis=0, keepdims=True)
     sd = X.std(axis=0, keepdims=True) + 1e-8
     return mu, sd
 
-def zscore_apply(X, mu, sd):
+def zscore_apply(X: np.ndarray, mu: np.ndarray, sd: np.ndarray) -> np.ndarray:
+    """
+    Applique la standardisation z-score aux données X.
+    Paramètres :
+    ------------
+    X : ndarray shape (m, n)
+        Données d'entrée.
+    mu : ndarray shape (1, n)
+        Moyenne de chaque feature (issue de zscore_fit).
+    sd : ndarray shape (1, n)
+        Écart-type de chaque feature (issue de zscore_fit).
+    Retour :
+    --------
+    X_std : ndarray shape (m, n)
+        Données standardisées.
+    """
     return (X - mu) / sd
 
 if __name__ == "__main__":

@@ -1,13 +1,20 @@
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('TkAgg')  # ou 'Qt5Agg', 'Agg' (pour sauvegarder sans afficher)
 import numpy as np
 import os
 
-def plot_decision_boundary(X, y, weights, *,
-                           X_has_bias=False,      # True si X inclut une colonne x0=1
-                           bias_pos="first",      # "first" si weights = [b,w1,w2], "last" si [w1,w2,b]
-                           type=None,
-                           title="Perceptron – Frontière de décision",
-                           save_plot=False):
+def plot_decision_boundary(
+    X: np.ndarray,
+    y: np.ndarray,
+    weights: np.ndarray,
+    *,
+    X_has_bias: bool = False,
+    bias_pos: str = "first",
+    type: str = None,
+    title: str = "Perceptron – Frontière de décision",
+    save_plot: bool = False
+) -> None:
     """
     Trace la frontière de décision pour un modèle linéaire (Perceptron, Adaline, etc.) en 2D.
 
@@ -96,8 +103,12 @@ def plot_decision_boundary(X, y, weights, *,
 
     plt.show()
 
-def plot_emoy_evolution(emoy_list, type, title="Évolution de l'erreur quadratique moyenne",
-                        save_plot=False):
+def plot_emoy_evolution(
+    emoy_list: list[float] | np.ndarray,
+    type: str,
+    title: str = "Évolution de l'erreur quadratique moyenne",
+    save_plot: bool = False
+) -> None:
     """
     Trace l'évolution de l'erreur quadratique moyenne (Emoy) au fil des époques.
 

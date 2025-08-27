@@ -2,11 +2,13 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
-def build_signs_datasets(src="../Datas/LangageDesSignes/data_formatted.csv",
-                         dst_dir="../Datas/LangageDesSignes",
-                         per_class_learn=50,
-                         per_class_val=10,
-                         seed=42):
+def build_signs_datasets(
+    src: str = "../Datas/LangageDesSignes/data_formatted.csv",
+    dst_dir: str = "../Datas/LangageDesSignes",
+    per_class_learn: int = 50,
+    per_class_val: int = 10,
+    seed: int = 42
+) -> None:
     """
     Construit deux fichiers CSV pour l'apprentissage et la validation
     à partir du dataset de langage des signes :

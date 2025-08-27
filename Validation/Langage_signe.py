@@ -4,7 +4,7 @@ from pathlib import Path
 from Modèles.mlp import predict_class
 from Outils.visual_mlp import plot_confusion_matrix
 
-def class_to_letter(c):
+def class_to_letter(c: int) -> str:
     """
     Convertit un numéro de classe (1..5) en lettre (A..E).
     Exemple : 1 → A, 2 → B, ..., 5 → E

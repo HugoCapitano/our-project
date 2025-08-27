@@ -14,7 +14,7 @@ if __name__ == "__main__":
     # === 2. Définition de l’architecture du réseau ===
     # Le problème XOR est non-linéaire → nécessite au moins une couche cachée non-linéaire.
     # Ici : 2 entrées → 8 neurones cachés → 8 neurones cachés → 2 sorties.
-    layers = [X.shape[1], 8, 8, 2]       # Taille des couches
+    layers = [X.shape[1], 8, 8, 2]       # Taille des couches | x.shape donne la taille (les dimensions) du tableau x |
     activs = ["relu", "relu", "softmax"] # Fonctions d’activation par couche
 
     # === 3. Entraînement du réseau ===

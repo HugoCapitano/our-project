@@ -1,76 +1,43 @@
 import numpy as np
 
-def perceptron_gradient(X, y, X_bias, weights, learning_rate=0.01, max_epochs=100, emoy_threshold=0.01):
+def perceptron_gradient(
+    X: np.ndarray,
+    y: np.ndarray,
+    X_bias: np.ndarray,
+    weights: np.ndarray,
+    learning_rate: float = 0.01,
+    max_epochs: int = 100,
+    emoy_threshold: float = 0.01
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, list[float]]:
     """
-    Implémente le perceptron avec la descente de gradient.
+    Implémente le perceptron avec la descente de gradient FULL BATCH.
     Ici, l’activation est linéaire (identité), donc pas de fonction seuil.
-
-    Paramètres :
-    ------------
-    X : ndarray shape (n_samples, n_features)
-        Données d'entrée sans biais (non utilisé dans le calcul, juste pour compatibilité).
-    y : ndarray shape (n_samples,)
-        Cibles attendues (valeurs en {-1, 1}).
-    X_bias : ndarray shape (n_samples, n_features+1)
-        Données d'entrée avec biais ajouté en première colonne (x0 = 1).
-    weights : ndarray shape (n_features+1,)
-        Poids initiaux du modèle (y compris le biais).
-    learning_rate : float
-        Taux d'apprentissage (n).
-    max_epochs : int
-        Nombre maximum d'itérations sur l'ensemble du jeu de données.
-    emoy_threshold : float
-        Seuil de l’erreur quadratique moyenne pour arrêter l’apprentissage (convergence).
-
-    Retour :
-    --------
-    X : ndarray
-        Données d'entrée initiales (sans biais).
-    y : ndarray
-        Cibles initiales.
-    weights : ndarray
-        Poids appris après entraînement.
-    emoy_list : list of float
-        Liste des valeurs d'erreur quadratique moyenne (Emoy) à chaque époque.
     """
+    n_samples = X_bias.shape[0] # Nombre d'échantillons
+    emoy_list = [] # Liste pour stocker l'erreur quadratique moyenne à chaque époque
 
-    # Nombre d'échantillons
-    n_samples = X_bias.shape[0]
+    for epoch in range(max_epochs): # Boucle sur le nombre d'époques
+        # Prédiction sur tout le batch (calcul linéaire)
 
-    # Liste pour stocker l’évolution de l’erreur quadratique moyenne
-    emoy_list = []
+        y_pred = X_bias.dot(weights) # Calcul des sorties du perceptron
 
-    # Boucle d'entraînement sur plusieurs époques
-    for epoch in range(max_epochs):
+        error = y - y_pred # Calcul de l'erreur entre la cible et la prédiction
 
-        # Accumulateur d'erreur totale pour cette époque
-        total_error = 0.0
+        # Erreur quadratique moyenne (MSE/2)
+        emoy = (error ** 2).mean() / 2 
+        emoy_list.append(emoy) # Stocke l'erreur pour suivi
 
-        # Parcours de chaque échantillon
-        for i in range(n_samples):
+        # Calcul du gradient global (vectorisé sur tout le batch) 
+        gradient = -X_bias.T.dot(error) / n_samples # Gradient de l'erreur 
 
-            # Calcul de la sortie linéaire (pas de fonction seuil ici)
-            y_pred = np.dot(X_bias[i], weights)
+        # Mise à jour des poids (une seule fois par époque)
+        weights -= learning_rate * gradient
 
-            # Erreur entre la sortie attendue et la sortie prédite
-            error = y[i] - y_pred
+        # Condition d'arrêt si la perte est suffisamment faible
 
-            # Accumulation de l’erreur quadratique
-            total_error += error ** 2
-
-            # Mise à jour des poids selon la règle :
-            # wi(t+1) = wi(t) + n * (d^k - y^k) * xi^k
-            weights += learning_rate * error * X_bias[i]
-
-        # Calcul de l'erreur quadratique moyenne Emoy
-        emoy = total_error / (2 * n_samples)
-        emoy_list.append(emoy)
-
-
-        # Affichage si convergence atteinte (Emoy < seuil)
         if emoy < emoy_threshold:
             print(f"Convergence atteinte à l'époque {epoch + 1} avec Emoy = {emoy:.5f}")
             break
 
-    # Retourne les données, les poids appris et la liste des erreurs moyennes
+    # Retourne les données, les cibles, les poids appris et la liste des erreurs
     return X, y, weights, emoy_list

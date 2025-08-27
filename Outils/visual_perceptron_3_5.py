@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('TkAgg')  # ou 'Qt5Agg', 'Agg' (pour sauvegarder sans afficher)
 import os
 
-def _pm1_to_labels(Y_pm1):
+def _pm1_to_labels(Y_pm1: np.ndarray) -> np.ndarray:
     """
     Convertit un codage {-1, +1} en labels 0..C-1 (schéma one-vs-all).
 
@@ -21,9 +23,14 @@ def _pm1_to_labels(Y_pm1):
     return np.argmax(Y01, axis=1).astype(int)
 
 def plot_class_prototypes_csv(
-        file_path, n_classes=4, grid_shape=(5,5), feature_count=None,
-        save=False,title=None,type=None
-):
+    file_path: str,
+    n_classes: int = 4,
+    grid_shape: tuple = (5, 5),
+    feature_count: int = None,
+    save: bool = False,
+    title: str = None,
+    type: str = None
+) -> None:
     """
     Affiche un 'prototype' par classe (moyenne des échantillons de la classe).
     Utile pour visualiser les caractéristiques moyennes dans des données type image.
@@ -87,16 +94,18 @@ def plot_class_prototypes_csv(
 
     plt.show()
 
-def confusion_matrix_plot(y_true,
-                          y_pred,
-                          class_names=None,
-                          normalize=None,   # None | "true" | "pred" | "all"
-                          type="Perceptron_monocouche",
-                          save=False,
-                          figsize=(6, 6),
-                          cmap="Blues",
-                          title="aucune titre défini",
-                          save_path=None):
+def confusion_matrix_plot(
+    y_true: np.ndarray,
+    y_pred: np.ndarray,
+    class_names: list[str] = None,
+    normalize: str = None,
+    type: str = "Perceptron_monocouche",
+    save: bool = False,
+    figsize: tuple = (6, 6),
+    cmap: str = "Blues",
+    title: str = "aucune titre défini",
+    save_path: str = None
+) -> np.ndarray:
     """
     Calcule et trace une matrice de confusion sans sklearn.
 

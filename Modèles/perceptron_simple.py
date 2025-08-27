@@ -1,6 +1,13 @@
 import numpy as np
 
-def perceptron(X,y,X_bias,weights,learning_rate,max_epochs):
+def perceptron(
+    X: np.ndarray,
+    y: np.ndarray,
+    X_bias: np.ndarray,
+    weights: np.ndarray,
+    learning_rate: float,
+    max_epochs: int
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Entraîne un perceptron simple (classification binaire).
 

@@ -4,12 +4,15 @@ from matplotlib.colors import ListedColormap
 import os
 
 def plot_decision_regions_shaded(
-        X, y, weights, *,
-        X_has_bias=True,          # True si X inclut x0=1 en 1re colonne
-        bias_pos="first",         # "first": [b,w1,w2], "last": [w1,w2,b]
-        title="BatchGD Decision Boundary - Non-Linear Data (+/-1)",
-        save_path=None
-):
+    X: np.ndarray,
+    y: np.ndarray,
+    weights: np.ndarray,
+    *,
+    X_has_bias: bool = True,
+    bias_pos: str = "first",
+    title: str = "BatchGD Decision Boundary - Non-Linear Data (+/-1)",
+    save_path: str = None
+) -> None:
     """
     Affiche les régions de décision et la frontière pour un classifieur binaire
     (valeurs cibles {-1, +1}) sur deux features.

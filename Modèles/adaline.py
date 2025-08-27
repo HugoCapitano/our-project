@@ -1,7 +1,12 @@
 import numpy as np
 from Outils.initialisation import add_x0, ini_weight
 
-def adaline_train(X, y, lr=0.0001, epochs=200):
+def adaline_train(
+    X: np.ndarray,
+    y: np.ndarray,
+    lr: float = 0.0001,
+    epochs: int = 200
+) -> tuple[np.ndarray, list[float]]:
     """
     Entraîne un modèle ADALINE (Adaptive Linear Neuron) en utilisant la descente de gradient.
 
@@ -56,7 +61,10 @@ def adaline_train(X, y, lr=0.0001, epochs=200):
     return weights, errors
 
 
-def adaline_predict(X, weights):
+def adaline_predict(
+    X: np.ndarray,
+    weights: np.ndarray
+) -> np.ndarray:
     """
     Prédit la sortie d'un modèle ADALINE entraîné.
 

@@ -1,9 +1,16 @@
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('TkAgg')  # ou 'Qt5Agg', 'Agg' (pour sauvegarder sans afficher)
 import numpy as np
 import os
 
 
-def plot_learning_curve(errors, type, title="Courbe d'apprentissage Adaline - 2.11", save_plot=True):
+def plot_learning_curve(
+    errors: list[float] | np.ndarray,
+    type: str,
+    title: str = "Courbe d'apprentissage Adaline - 2.11",
+    save_plot: bool = True
+) -> None:
     """
     Trace la courbe d'apprentissage (erreur quadratique moyenne) d'un modèle ADALINE.
 
@@ -40,7 +47,14 @@ def plot_learning_curve(errors, type, title="Courbe d'apprentissage Adaline - 2.
     plt.show()
 
 
-def plot_regression_result(X, y, y_pred, type, title="Perceptron Adaline Table 2.11", save_plot=True):
+def plot_regression_result(
+    X: np.ndarray,
+    y: np.ndarray,
+    y_pred: np.ndarray,
+    type: str,
+    title: str = "Perceptron Adaline Table 2.11",
+    save_plot: bool = True
+) -> None:
     """
     Trace le résultat d'une régression linéaire avec ADALINE :
     - Points bleus : données réelles (X, y)

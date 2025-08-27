@@ -1,10 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
+import matplotlib
+matplotlib.use('TkAgg')  # ou 'Qt5Agg', 'Agg' (pour sauvegarder sans afficher)
 import os
 
 
-def _ensure_dir(path):
+def _ensure_dir(path: str) -> None:
     """
     Crée le dossier parent du chemin fourni si nécessaire.
     - path : chemin complet d'un fichier ou dossier
@@ -13,15 +15,17 @@ def _ensure_dir(path):
         os.makedirs(os.path.dirname(path), exist_ok=True)
 
 def plot_decision_boundary_1d_fn(
-        predict_fn, X, y,
-        title="Decision boundary (1D)",
-        save_path=None,
-        num_points=600,
-        xlim=None,          # Limites X (xmin, xmax) ou None
-        ylim=(-2, 2),       # Limites Y par défaut
-        tick_step=0.5,      # Pas des ticks (x et y)
-        jitter_amp=0.08     # Amplitude du bruit vertical
-):
+    predict_fn: callable,
+    X: np.ndarray,
+    y: np.ndarray,
+    title: str = "Decision boundary (1D)",
+    save_path: str = None,
+    num_points: int = 600,
+    xlim: tuple = None,
+    ylim: tuple = (-2, 2),
+    tick_step: float = 0.5,
+    jitter_amp: float = 0.08
+) -> None:
     """
         Trace une frontière de décision en 1D avec fond coloré par classe prédite.
 
@@ -86,11 +90,15 @@ def plot_decision_boundary_1d_fn(
     plt.show()
 
 def plot_decision_regions_2d_fn(
-        predict_fn, X, y,
-        title="Decision regions (2D)",
-        save_path=None,
-        xlim=None, ylim=None, tick_step=None
-):
+    predict_fn: callable,
+    X: np.ndarray,
+    y: np.ndarray,
+    title: str = "Decision regions (2D)",
+    save_path: str = None,
+    xlim: tuple = None,
+    ylim: tuple = None,
+    tick_step: float = None
+) -> None:
     """
     Trace les régions de décision pour un jeu de données 2D.
     Si X a plus de 2 features, les autres sont fixées à leur moyenne.
@@ -146,7 +154,11 @@ def plot_decision_regions_2d_fn(
 
 # === Courbes d'apprentissage ===
 
-def plot_learning_curve(losses, title="MLP – Courbe d'apprentissage", save_path=None):
+def plot_learning_curve(
+    losses: list[float] | np.ndarray,
+    title: str = "MLP – Courbe d'apprentissage",
+    save_path: str = None
+) -> None:
     """
     Trace la perte (loss) par époque.
     - losses : liste/array de valeurs de perte (une par epoch)
@@ -163,7 +175,11 @@ def plot_learning_curve(losses, title="MLP – Courbe d'apprentissage", save_pat
     plt.show()
 
 
-def plot_accuracy_curve(accs, title="MLP – Courbe d'accuracy", save_path=None):
+def plot_accuracy_curve(
+    accs: list[float] | np.ndarray,
+    title: str = "MLP – Courbe d'accuracy",
+    save_path: str = None
+) -> None:
     """
     Trace la courbe d'accuracy par époque.
     """
@@ -180,12 +196,17 @@ def plot_accuracy_curve(accs, title="MLP – Courbe d'accuracy", save_path=None)
     plt.show()
 
 def plot_regression_4_17(
-        predict_fn, X, y,
-        feature_index=0, n_points=600,
-        xlim=None, ylim=None, tick_step=None,
-        title="MLP Non-Linear Regression Fit",
-        save_path=None
-):
+    predict_fn: callable,
+    X: np.ndarray,
+    y: np.ndarray,
+    feature_index: int = 0,
+    n_points: int = 600,
+    xlim: tuple = None,
+    ylim: tuple = None,
+    tick_step: float = None,
+    title: str = "MLP Non-Linear Regression Fit",
+    save_path: str = None
+) -> None:
     """
     Trace la courbe de régression (prédictions vs données réelles)
     en fonction d'une feature sélectionnée.
@@ -233,9 +254,12 @@ def plot_regression_4_17(
 
 
 def plot_residuals(
-        y_true, y_pred, bins=20,
-        title="Residuals (y - ŷ)", save_path=None
-):
+    y_true: np.ndarray,
+    y_pred: np.ndarray,
+    bins: int = 20,
+    title: str = "Residuals (y - ŷ)",
+    save_path: str = None
+) -> None:
     """
     Trace l'histogramme des résidus (y - prédiction).
     """
@@ -251,12 +275,13 @@ def plot_residuals(
 
 # === Matrice de confusion (classification) ===
 def plot_confusion_matrix(
-        y_true, y_pred,
-        labels=None,
-        normalize=False,
-        title="Matrice de confusion",
-        save_path=None
-):
+    y_true: np.ndarray,
+    y_pred: np.ndarray,
+    labels: list = None,
+    normalize: bool = False,
+    title: str = "Matrice de confusion",
+    save_path: str = None
+) -> None:
     """
     Trace une matrice de confusion avec option de normalisation.
     """
