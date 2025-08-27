@@ -245,35 +245,35 @@ def fit_classification(
         losses : liste des pertes à chaque époque
         accs : liste des accuracy à chaque époque
     """
-    W, b = init_params(layers, activations, seed=seed)
-    m = X.shape[0]
-    if batch_size is None: batch_size = m
-    rng = np.random.default_rng(seed)
-    Y = one_hot(y, layers[-1])
+    W, b = init_params(layers, activations, seed=seed) # Initialisation des poids et biais
+    m = X.shape[0]                                     # Nombre d'échantillons
+    if batch_size is None: batch_size = m               # Si batch_size non spécifié, on fait du full batch
+    rng = np.random.default_rng(seed)                   # Générateur aléatoire pour le shuffle
+    Y = one_hot(y, layers[-1])                          # Encodage one-hot des labels
 
-    losses = []
-    accs = []
+    losses = [] # Liste des pertes (cross-entropy) à chaque époque
+    accs = []   # Liste des accuracy à chaque époque
 
-    for ep in range(epochs):
-        idx = np.arange(m); rng.shuffle(idx)
-        Xs, Ys = X[idx], Y[idx]
+    for ep in range(epochs):                            # Boucle sur les époques
+        idx = np.arange(m); rng.shuffle(idx)            # Mélange des indices pour le batch
+        Xs, Ys = X[idx], Y[idx]                        # Données mélangées
 
-        total_loss = 0.0
-        for s in range(0, m, batch_size):
-            e = s + batch_size
-            Xb, Yb = Xs[s:e], Ys[s:e]
-            dWs, dbs, Aout = backward_classification(Xb, Yb, W, b, activations, reg_l2=reg_l2)
-            update_params(W, b, dWs, dbs, lr)
-            total_loss += loss_ce(Yb, Aout) * Xb.shape[0]
+        total_loss = 0.0                              # Initialisation de la perte totale pour l'époque
+        for s in range(0, m, batch_size):               # Boucle sur les mini-batchs
+            e = s + batch_size                   # Fin du batch
+            Xb, Yb = Xs[s:e], Ys[s:e]                  # Sélection du batch courant
+            dWs, dbs, Aout = backward_classification(Xb, Yb, W, b, activations, reg_l2=reg_l2) # Rétropropagation
+            update_params(W, b, dWs, dbs, lr)           # Mise à jour des paramètres
+            total_loss += loss_ce(Yb, Aout) * Xb.shape[0] # Accumulation de la perte pondérée par la taille du batch
 
-        losses.append(total_loss / m)
+        losses.append(total_loss / m)                   # Moyenne de la perte sur l'époque
 
         # Calcul accuracy à la fin de l'époque
-        y_pred_ep = predict_class(X, W, b, activations)
-        accs.append((y_pred_ep == y).mean())
+        y_pred_ep = predict_class(X, W, b, activations) # Prédiction sur tout le dataset
+        accs.append((y_pred_ep == y).mean())            # Calcul de l'accuracy
 
-        if verbose and (ep % max(1, epochs//10) == 0 or ep == epochs-1):
-            print(f"[{ep+1}/{epochs}] loss={losses[-1]:.4f} acc={accs[-1]:.3f}")
+        if verbose and (ep % max(1, epochs//10) == 0 or ep == epochs-1): # Affichage périodique
+            print(f"[{ep+1}/{epochs}] loss={losses[-1]:.4f} acc={accs[-1]:.3f}") 
 
     return W, b, losses, accs        # ← NEW
 
@@ -286,7 +286,7 @@ def update_params(
     lr: float
 ) -> None:
     # Met à jour les poids et biais du réseau avec le gradient calculé
-    for l in range(len(W)):
+    for l in range(len(W)): 
         W[l] -= lr * dWs[l]  # Descente de gradient sur les poids
         b[l] -= lr * dbs[l]  # Descente de gradient sur les biais
 
