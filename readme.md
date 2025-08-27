@@ -23,7 +23,7 @@ Ce projet regroupe des outils et des modèles pour l'apprentissage et la validat
    Utiliser le scripts du dossier `Outils/prep_datasets` pour formater et équilibrer les datasets pour MLP (langage des signes).
 
 2. **Entraîner un modèle**  
-   Utiliser le scripts du dossier `Outils/train_mlp2` pour formater et équilibrer les datasets pour MLP (langage des signes).
+   Utiliser le scripts du dossier `Outils/train_mlp2` pour entrainer le MLP (langage des signes).
 
 3. **Visualiser les résultats**  
    Utiliser les scripts du dossier `Validation/` pour évaluer le modèle sur un jeu de validation.
