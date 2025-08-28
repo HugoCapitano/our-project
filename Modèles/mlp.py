@@ -131,23 +131,27 @@ def forward(
 
 # ---------- Rétropropagation et mise à jour ----------
 def backward_classification(
-    Xb: np.ndarray,
-    yb_onehot: np.ndarray,
-    W: list[np.ndarray],
-    b: list[np.ndarray],
-    activations: list[str],
-    reg_l2: float = 0.0
+    Xb: np.ndarray, # batch d’exemples
+    yb_onehot: np.ndarray, # labels sous forme one-hot
+    W: list[np.ndarray], # listes des matrices de poids
+    b: list[np.ndarray], # biais
+    activations: list[str],  # liste des fonctions d’activation (pour chaque couche)
+    reg_l2: float = 0.0 # (λ) coefficient de régularisation L2, évite sur apprentissage - Perte totale = Perte Classique + λ * somme_des_carrés_des_poids (du réseau)
+        # Plus λ est grand, plus les poids sont poussés vers zéro → le modèle devient plus simple, moins sensible au bruit des données.
 ) -> tuple[list[np.ndarray], list[np.ndarray], np.ndarray]:
     """
-    Softmax + cross-entropy en sortie.
+    Softmax (convertit des scores (par classes) en proba, pour normaliser) + cross-entropy (écart entre prédiction et résultat) en sortie.
     Retourne gradients dW, db.
     """
     Zs, As, Aout = forward(Xb, W, b, activations)  # Propagation avant : récupère Z, A, et la sortie finale
+    # Zs = résultat linéaire avant activation (Liste des Z pour chaque couche)
+    # As = sortie de la fonction d’activation pour chaques couches (sauf derniere)
+    # Aout = sortie finale du réseau (prédictions du réseau), les probabilités prédites pour chaque classe.
     m = Xb.shape[0]                               # Nombre d'échantillons dans le batch
     L = len(W)                                    # Nombre de couches
 
     # Gradient de sortie pour softmax + cross-entropy : (Aout - Y) / m
-    dZ = (Aout - yb_onehot) / m
+    dZ = (Aout - yb_onehot) / m # Gradient de la perte, l’erreur brute pour chaque exemple et chaque classe.
 
     dWs = [None]*L    # Liste pour stocker les gradients des poids
     dbs = [None]*L    # Liste pour stocker les gradients des biais
@@ -159,8 +163,8 @@ def backward_classification(
         dW = A_prev.T @ dZ + reg_l2 * W[l]
         # Calcul du gradient des biais
         db = np.sum(dZ, axis=0, keepdims=True)
-        dWs[l] = dW
-        dbs[l] = db
+        dWs[l] = dW # gradients des poids
+        dbs[l] = db # gradients des biais
 
         if l > 0:
             # Propagation du gradient vers la couche précédente
@@ -171,18 +175,21 @@ def backward_classification(
     return dWs, dbs, Aout  # Retourne les gradients des poids, des biais et la sortie finale
 
 def backward_regression(
-    Xb: np.ndarray,
-    yb: np.ndarray,
-    W: list[np.ndarray],
-    b: list[np.ndarray],
+    Xb: np.ndarray, # batch d’exemples
+    yb: np.ndarray, # labels
+    W: list[np.ndarray], # listes des matrices de poids
+    b: list[np.ndarray], # biais
     activations: list[str],
-    reg_l2: float = 0.0
+    reg_l2: float = 0.0 #
 ) -> tuple[list[np.ndarray], list[np.ndarray], np.ndarray]:
     """
     Régression: perte MSE, dernière activation linéaire en général.
     Retourne les gradients des poids, des biais et la sortie finale.
     """
     Zs, As, Aout = forward(Xb, W, b, activations)  # Propagation avant : récupère Z, A, et la sortie finale
+    # Zs = résultat linéaire avant activation (Liste des Z pour chaque couche)
+    # As = sortie de la fonction d’activation pour chaques couches (sauf derniere)
+    # Aout = sortie finale du réseau (prédictions du réseau), les probabilités prédites pour chaque classe.
     m = Xb.shape[0]                                # Nombre d'échantillons dans le batch
     L = len(W)                                     # Nombre de couches
 
