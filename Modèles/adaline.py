@@ -5,7 +5,8 @@ def adaline_train(
     X: np.ndarray,
     y: np.ndarray,
     lr: float = 0.0001,
-    epochs: int = 200
+    epochs: int = 200,
+    mse_threshold: float = 0.0
 ) -> tuple[np.ndarray, list[float]]:
     """
     Entraîne un modèle ADALINE (Adaptive Linear Neuron) en utilisant la descente de gradient.
@@ -39,7 +40,7 @@ def adaline_train(
     errors = []
 
     # Boucle d'entraînement
-    for epoch in range(epochs):
+    for epoch in range(epochs): # emoy < seuil
 
         # Calcul de la sortie du modèle (produit scalaire entre X et les poids)
         y_pred = X_bias.dot(weights)
@@ -50,12 +51,16 @@ def adaline_train(
         # Calcul de l'erreur quadratique moyenne divisée par 2
         mse = (error**2).mean() / 2
         errors.append(mse)
-
+        print("mse: ", mse)
         # Calcul du gradient de l'erreur par rapport aux poids
         gradient = -X_bias.T.dot(error) / len(y)
 
         # Mise à jour des poids avec la descente de gradient
         weights -= lr * gradient
+
+        if mse < mse_threshold:
+            print(f"Convergence atteinte à l'époque {epoch + 1} avec Emoy = {mse:.5f}")
+            break
 
         print(f"Époque {epoch+1} | Emoy = {mse:.6f}")
     return weights, errors

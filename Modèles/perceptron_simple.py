@@ -45,11 +45,11 @@ def perceptron(
             # Calcul de la somme pondérée : w · x
             p = np.dot(X_bias[i], weights)
 
-            # Application de la fonction d'activation (seuil)
+            # Application de la fonction d'activation (seuil) (y(k))
             y_pred = 1 if p >= 0 else -1
 
             # Calcul de l'erreur : valeur attendue - valeur prédite
-            error = y[i] - y_pred
+            error = y[i] - y_pred #
 
             # Si la prédiction est incorrecte → mise à jour des poids
             if error != 0:

@@ -27,7 +27,7 @@ if __name__ == "__main__":
     # Retourne :
     #   - new_weight : poids appris
     #   - errors : liste des erreurs quadratiques moyennes (Emoy) par époque
-    new_weight, errors = adaline_train(x_bias, y, lr=0.0001, epochs=100)
+    new_weight, errors = adaline_train(x_bias, y, lr=0.0001, epochs=100, mse_threshold=0.66)
     print("adaline_train: ok")
 
     # === 5. Prédictions du modèle ===
