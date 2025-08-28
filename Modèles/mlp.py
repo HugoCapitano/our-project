@@ -81,7 +81,7 @@ def init_params(
         act = activations[l]
         # He pour ReLU, Xavier sinon
         if act == "relu": # relu pas de nbr négatif
-            std = np.sqrt(2.0 / n_in) 
+            std = np.sqrt(2.0 / n_in)
         else:
             std = np.sqrt(1.0 / (n_in + n_out)) # Xavier (technique initialisation des poids)
         W.append(rng.normal(0.0, std, size=(n_in, n_out))) # Poids initiaux tirés d'une normale centrée réduite et ajustée
