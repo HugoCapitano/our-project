@@ -83,7 +83,7 @@ def init_params(
         if act == "relu": # relu pas de nbr négatif
             std = np.sqrt(2.0 / n_in) 
         else:
-            std = np.sqrt(1.0 / (n_in + n_out)) # Xavier 
+            std = np.sqrt(1.0 / (n_in + n_out)) # Xavier (technique initialisation des poids)
         W.append(rng.normal(0.0, std, size=(n_in, n_out))) # Poids initiaux tirés d'une normale centrée réduite et ajustée
         b.append(np.zeros((1, n_out))) # Biais initialisés à 0
     return W, b  # retourne les listes de poids et biais prets à être utilisés pour l'entraînement
